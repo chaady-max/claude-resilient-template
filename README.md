@@ -34,6 +34,7 @@ This template treats Claude as a **stateless worker** and externalizes all state
 | `PLAN.md` | High-level intent and architectural decisions | Human (mostly) |
 | `claude.md` | Project-specific instructions for Claude | Human + Claude |
 | `CLAUDE_PROTOCOL.md` | Mandatory execution protocol for Claude | Human (never changes) |
+| `tools/launch-claude.sh` | Launch Claude with protocol auto-loaded | Human |
 | `tools/handoff.sh` | Script to capture current state | Human |
 
 ---
@@ -64,8 +65,11 @@ This script will:
 - Create `claude.md` with project-specific instructions
 - Set up git hooks (optional)
 - Create initial commit
+- **Optionally launch Claude automatically with CLAUDE_PROTOCOL.md loaded!**
 
 **Do NOT skip this step!** Without running `start.sh`, you will not have a `TASK.md` file and Claude cannot work.
+
+**Note:** If you choose to start Claude at the end of `start.sh`, the protocol will be automatically loaded and you can begin working immediately!
 
 ### 3. (Alternative) Manually Create TASK.md
 
@@ -92,18 +96,30 @@ Create a package.json file with Express and PostgreSQL dependencies
 
 Also create `PLAN.md` and `claude.md` if needed.
 
-### 4. Start Claude
+### 4. Start Claude (Automatic or Manual)
 
-In your terminal or VS Code:
+**Option A: Automatic (Recommended)**
+
+The bootstrap script asks if you want to start Claude automatically. If you say yes, the protocol is automatically loaded!
+
+**Option B: Use Helper Script**
+
+Anytime you want to resume work:
 
 ```bash
-# Start Claude Code (or open in VS Code)
-claude
+./tools/launch-claude.sh
 ```
 
-### 5. Paste the Protocol
+This automatically starts Claude with `CLAUDE_PROTOCOL.md` loaded.
 
-Copy the **entire contents** of `CLAUDE_PROTOCOL.md` and paste it into Claude.
+**Option C: Manual**
+
+Start Claude manually and paste the protocol:
+
+```bash
+claude
+# Then paste the entire contents of CLAUDE_PROTOCOL.md
+```
 
 Claude will respond:
 ```
@@ -135,7 +151,15 @@ Claude will read the updated `TASK.md` and repeat the cycle.
 
 ### If Claude Session Ends Unexpectedly
 
-1. Start a new Claude session (same account or different account)
+**Quick Resume (Recommended):**
+```bash
+./tools/launch-claude.sh
+```
+
+This automatically loads the protocol and resumes from where you left off.
+
+**Manual Resume:**
+1. Start a new Claude session: `claude`
 2. Paste the contents of `CLAUDE_PROTOCOL.md` again
 3. Claude reads `TASK.md` and continues from where it stopped
 
@@ -282,6 +306,32 @@ This file defines **how Claude must operate**.
 - **Never modified** after creation
 - Pasted into every new Claude session
 - Non-negotiable execution protocol
+
+### `tools/launch-claude.sh` - Auto-Launch Helper (UTILITY)
+
+A shell script that launches Claude with the protocol automatically loaded.
+
+**Usage:**
+```bash
+./tools/launch-claude.sh
+```
+
+**What it does:**
+- Checks if `TASK.md` exists (prevents errors)
+- Checks if `CLAUDE_PROTOCOL.md` exists
+- Automatically pipes protocol into Claude
+- Starts Claude session ready to work
+
+**When to use:**
+- After `start.sh` completes (if you didn't auto-launch)
+- When resuming work after a break
+- After Claude session ends unexpectedly
+- Anytime you want to start a new Claude session
+
+**Benefits:**
+- No need to manually paste `CLAUDE_PROTOCOL.md`
+- Faster workflow
+- Less room for error
 
 ### `tools/handoff.sh` - State Capture (UTILITY)
 
