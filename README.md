@@ -65,11 +65,11 @@ This script will:
 - Create `claude.md` with project-specific instructions
 - Set up git hooks (optional)
 - Create initial commit
-- **Optionally launch Claude automatically with CLAUDE_PROTOCOL.md loaded!**
+- **Optionally launch Claude with CLAUDE_PROTOCOL.md copied to clipboard!**
 
 **Do NOT skip this step!** Without running `start.sh`, you will not have a `TASK.md` file and Claude cannot work.
 
-**Note:** If you choose to start Claude at the end of `start.sh`, the protocol will be automatically loaded and you can begin working immediately!
+**Note:** If you choose to start Claude at the end of `start.sh`, the protocol will be copied to your clipboard. Just paste (Cmd+V) when Claude starts!
 
 ### 3. (Alternative) Manually Create TASK.md
 
@@ -96,11 +96,15 @@ Create a package.json file with Express and PostgreSQL dependencies
 
 Also create `PLAN.md` and `claude.md` if needed.
 
-### 4. Start Claude (Automatic or Manual)
+### 4. Start Claude (Clipboard-Assisted or Manual)
 
-**Option A: Automatic (Recommended)**
+**Option A: Clipboard-Assisted (Recommended)**
 
-The bootstrap script asks if you want to start Claude automatically. If you say yes, the protocol is automatically loaded!
+The bootstrap script asks if you want to start Claude. If you say yes:
+1. CLAUDE_PROTOCOL.md is copied to your clipboard
+2. Claude starts automatically
+3. Just press **Cmd+V** (or Ctrl+V) and **Enter** to paste the protocol
+4. Done! Claude reads TASK.md and starts working
 
 **Option B: Use Helper Script**
 
@@ -110,7 +114,7 @@ Anytime you want to resume work:
 ./tools/launch-claude.sh
 ```
 
-This automatically starts Claude with `CLAUDE_PROTOCOL.md` loaded.
+This copies `CLAUDE_PROTOCOL.md` to clipboard and starts Claude. Just paste and press Enter!
 
 **Option C: Manual**
 
@@ -319,8 +323,9 @@ A shell script that launches Claude with the protocol automatically loaded.
 **What it does:**
 - Checks if `TASK.md` exists (prevents errors)
 - Checks if `CLAUDE_PROTOCOL.md` exists
-- Automatically pipes protocol into Claude
-- Starts Claude session ready to work
+- Copies protocol to your clipboard
+- Launches Claude automatically
+- You just paste (Cmd+V) and press Enter
 
 **When to use:**
 - After `start.sh` completes (if you didn't auto-launch)
@@ -329,8 +334,9 @@ A shell script that launches Claude with the protocol automatically loaded.
 - Anytime you want to start a new Claude session
 
 **Benefits:**
-- No need to manually paste `CLAUDE_PROTOCOL.md`
-- Faster workflow
+- Protocol ready in clipboard - just one paste!
+- Faster workflow than manual copy
+- Works on macOS (pbcopy) and Linux (xclip)
 - Less room for error
 
 ### `tools/handoff.sh` - State Capture (UTILITY)

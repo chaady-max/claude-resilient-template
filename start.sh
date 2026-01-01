@@ -372,19 +372,46 @@ echo "=================================="
 echo ""
 
 # Offer to start Claude automatically
-if prompt_yes_no "Start Claude now with CLAUDE_PROTOCOL.md loaded?" "y"; then
+if prompt_yes_no "Start Claude now?" "y"; then
     echo ""
-    echo "Starting Claude Code with CLAUDE_PROTOCOL.md..."
-    echo ""
-    echo "The protocol will be automatically loaded."
-    echo "Claude will read TASK.md and begin working."
-    echo ""
-    echo "Press Ctrl+C to exit Claude at any time."
-    echo ""
-    sleep 2
 
-    # Start Claude with CLAUDE_PROTOCOL.md piped in
-    cat CLAUDE_PROTOCOL.md | claude
+    # Try to copy CLAUDE_PROTOCOL.md to clipboard (macOS/Linux)
+    if command -v pbcopy >/dev/null 2>&1; then
+        cat CLAUDE_PROTOCOL.md | pbcopy
+        echo "✓ CLAUDE_PROTOCOL.md copied to clipboard!"
+        echo ""
+        echo "When Claude starts:"
+        echo "  1. Press Cmd+V (or Ctrl+V) to paste the protocol"
+        echo "  2. Press Enter"
+        echo "  3. Claude will read TASK.md and begin working"
+        echo ""
+    elif command -v xclip >/dev/null 2>&1; then
+        cat CLAUDE_PROTOCOL.md | xclip -selection clipboard
+        echo "✓ CLAUDE_PROTOCOL.md copied to clipboard!"
+        echo ""
+        echo "When Claude starts:"
+        echo "  1. Press Ctrl+V to paste the protocol"
+        echo "  2. Press Enter"
+        echo "  3. Claude will read TASK.md and begin working"
+        echo ""
+    else
+        echo "⚠️  Could not copy to clipboard automatically."
+        echo ""
+        echo "When Claude starts:"
+        echo "  1. Open another terminal"
+        echo "  2. Run: cat CLAUDE_PROTOCOL.md | pbcopy"
+        echo "  3. Or manually copy the contents of CLAUDE_PROTOCOL.md"
+        echo "  4. Paste into Claude and press Enter"
+        echo ""
+    fi
+
+    echo "Starting Claude Code in 3 seconds..."
+    echo "Press Ctrl+C to cancel"
+    echo ""
+    sleep 3
+
+    # Start Claude normally (interactive mode)
+    claude
 
     echo ""
     echo "Claude session ended."
