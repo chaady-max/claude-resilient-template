@@ -1,0 +1,29 @@
+#!/bin/bash
+# Pre-commit hook for Claude-Resilient Template
+# This hook reminds you to update TASK.md before committing
+#
+# To install this hook:
+# cp git-hooks/pre-commit .git/hooks/pre-commit
+# chmod +x .git/hooks/pre-commit
+
+# Check if TASK.md is being committed
+if git diff --cached --name-only | grep -q "TASK.md"; then
+    echo "✓ TASK.md is included in this commit"
+    exit 0
+fi
+
+# If TASK.md is not in the commit, show a warning
+echo ""
+echo "⚠️  WARNING: TASK.md is not included in this commit"
+echo ""
+echo "The Claude-Resilient protocol requires TASK.md to be updated"
+echo "with every significant change."
+echo ""
+echo "Options:"
+echo "  1. Add TASK.md to this commit: git add TASK.md"
+echo "  2. Run state capture: ./tools/handoff.sh"
+echo "  3. Override this warning: git commit --no-verify"
+echo ""
+
+# Allow commit but show warning
+exit 0

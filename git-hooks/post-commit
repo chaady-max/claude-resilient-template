@@ -1,0 +1,16 @@
+#!/bin/bash
+# Post-commit hook for Claude-Resilient Template
+# Reminds you to update Next Action in TASK.md after committing
+#
+# To install this hook:
+# cp git-hooks/post-commit .git/hooks/post-commit
+# chmod +x .git/hooks/post-commit
+
+echo ""
+echo "✓ Commit successful"
+echo ""
+echo "Reminder: Update TASK.md with:"
+echo "  1. Move completed action to DONE"
+echo "  2. Update Current State"
+echo "  3. Write new Next Action"
+echo ""
