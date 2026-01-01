@@ -32,6 +32,7 @@ This template treats Claude as a **stateless worker** and externalizes all state
 |------|---------|-------------|
 | `TASK.md` | Single source of truth for execution state | Claude + Human |
 | `PLAN.md` | High-level intent and architectural decisions | Human (mostly) |
+| `claude.md` | Project-specific instructions for Claude | Human + Claude |
 | `CLAUDE_PROTOCOL.md` | Mandatory execution protocol for Claude | Human (never changes) |
 | `tools/handoff.sh` | Script to capture current state | Human |
 
@@ -96,12 +97,13 @@ Reading TASK.md now.
 
 Claude will:
 1. Read `TASK.md`
-2. Summarize the current state
-3. Ask for confirmation
-4. Execute **one step**
-5. Update `TASK.md`
-6. Output: `TASK.md updated. Waiting.`
-7. **Stop**
+2. Read `claude.md` (if it exists) for project-specific instructions
+3. Summarize the current state
+4. Ask for confirmation
+5. Execute **one step**
+6. Update `TASK.md`
+7. Output: `TASK.md updated. Waiting.`
+8. **Stop**
 
 ### 6. Continue
 
@@ -210,6 +212,43 @@ This file contains **high-level, slow-changing decisions**.
 - Claude should **not** modify this unless explicitly told
 - Humans update this when architecture changes
 - Provides context for **why** decisions were made
+
+### `claude.md` - Project-Specific Instructions (OPTIONAL)
+
+This file contains **project-specific instructions** that Claude should follow.
+
+**Structure:**
+- Project context (name, tech stack, version)
+- Automation rules (version numbering, auto-open/close)
+- Code standards and conventions
+- Testing requirements
+- Common patterns
+- Lessons learned
+
+**Purpose:**
+- Supplements global `~/.claude/CLAUDE.md`
+- Provides project-specific context
+- Documents version numbers and automation rules
+- Captures lessons learned during development
+
+**Rules:**
+- Created during bootstrap (`./start.sh`)
+- Claude reads this **after** `TASK.md` and **before** starting work
+- Updated by both humans and Claude
+- Can include version numbers, coding standards, and project-specific rules
+
+**Example:**
+```markdown
+## Automation Rules
+
+### Version Numbering
+- Current version: v0.1
+- Update version in app header after each significant change
+
+### Auto-Open/Close Logic
+- System should start and stop automatically
+- No manual intervention required
+```
 
 ### `CLAUDE_PROTOCOL.md` - Execution Rules (IMMUTABLE)
 

@@ -167,6 +167,102 @@ EOF
     echo ""
 fi
 
+# Create claude.md with project-specific instructions
+if prompt_yes_no "Create claude.md with project-specific Claude instructions?" "y"; then
+    read -p "Starting version number (default: v0.1): " version
+    version=${version:-"v0.1"}
+
+    cat > claude.md <<EOF
+# Project-Specific Claude Instructions
+
+This file contains project-specific instructions for Claude. These instructions supplement the global \`~/.claude/CLAUDE.md\` and apply only to this project.
+
+**Important:** Claude should read this file at the start of each session (after reading CLAUDE_PROTOCOL.md and TASK.md).
+
+---
+
+## Project Context
+
+**Project Name:** ${project_name}
+
+**Tech Stack:** ${tech_stack}
+
+**Current Version:** ${version}
+
+---
+
+## Automation Rules
+
+### Version Numbering
+- Every significant feature or change should increment the version number
+- Version format: \`v0.1\`, \`v0.2\`, etc.
+- Version should be displayed in the app header/footer
+- Current version: \`${version}\`
+- Update version in TASK.md notes after each significant change
+
+### Auto-Open/Close Logic
+- If the system is "smart" (automated), it should open and close automatically
+- No human interaction should be required for automated systems
+- Always implement graceful startup and shutdown
+
+---
+
+## Code Standards
+
+### File Organization
+[Describe how files should be organized in this project]
+
+### Naming Conventions
+- Files: \`kebab-case.js\`
+- Components: \`PascalCase\`
+- Functions: \`camelCase\`
+- Constants: \`UPPER_SNAKE_CASE\`
+
+### Error Handling
+- Always use try/catch for async operations
+- Return consistent error response format
+- Log errors with context
+
+---
+
+## Testing Requirements
+
+- [ ] Write tests for all new features
+- [ ] Run tests before committing
+
+---
+
+## Common Patterns
+
+### API Response Format
+\`\`\`javascript
+{
+  success: boolean,
+  message: string,
+  data?: any,
+  error?: string
+}
+\`\`\`
+
+---
+
+## Lessons Learned
+
+As you work on this project, document lessons learned here:
+
+### $(date '+%Y-%m-%d') - Project Started
+- **Setup:** Initialized from Claude-Resilient template
+- **Approach:** Using deterministic, stepwise execution
+
+---
+
+**Last Updated:** $(date '+%Y-%m-%d %H:%M:%S')
+EOF
+
+    echo "✓ claude.md created"
+    echo ""
+fi
+
 # Create initial commit
 if [ -d ".git" ]; then
     if prompt_yes_no "Create initial commit?"; then

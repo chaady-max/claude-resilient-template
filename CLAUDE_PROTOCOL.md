@@ -26,6 +26,19 @@ You **MUST** execute the following steps **in exact order**, **every time** you 
   - **OPEN**: Remaining actions
   - **Next Action**: The specific, executable step you must perform next
 
+### Step 1.5: READ claude.md (if it exists)
+
+- Check if `claude.md` exists in the project root
+- If it exists, read it for **project-specific instructions**
+- This file contains:
+  - Project context and conventions
+  - Version numbering rules
+  - Automation requirements
+  - Code standards and patterns
+  - Lessons learned from this project
+- Apply these instructions throughout the session
+- If `claude.md` does not exist, skip this step
+
 ### Step 2: SUMMARIZE
 
 Output the following summary:
@@ -134,6 +147,7 @@ If "Next Action" is unclear or impossible:
 
 - **All state** lives in `TASK.md`
 - **All decisions** live in `PLAN.md`
+- **Project-specific instructions** live in `claude.md` (if present)
 - Your memory **does not matter**
 - The repository is **always correct**
 
