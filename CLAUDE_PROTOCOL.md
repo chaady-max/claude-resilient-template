@@ -175,4 +175,25 @@ Then proceed to Step 1.
 
 ---
 
+## Error: TASK.md Does Not Exist
+
+If `TASK.md` does not exist or you cannot read it, **STOP IMMEDIATELY** and output:
+
+```
+❌ ERROR: TASK.md not found!
+
+This project has not been initialized yet.
+
+Please run the bootstrap script:
+  $ ./start.sh
+
+Or manually create TASK.md with your project objective and first action.
+
+See TASK.template.md for the required structure.
+```
+
+Do **NOT** proceed with execution. Do **NOT** create TASK.md yourself. Wait for the user to initialize the project.
+
+---
+
 **END OF PROTOCOL**

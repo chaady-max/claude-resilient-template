@@ -40,6 +40,8 @@ This template treats Claude as a **stateless worker** and externalizes all state
 
 ## Quick Start
 
+⚠️ **IMPORTANT: You MUST run `./start.sh` before using Claude!** ⚠️
+
 ### 1. Create New Project from Template
 
 ```bash
@@ -49,9 +51,25 @@ git clone <your-new-repo> my-project
 cd my-project
 ```
 
-### 2. Initialize Your Task
+### 2. **RUN THE BOOTSTRAP SCRIPT (REQUIRED!)**
 
-Edit `TASK.md`:
+```bash
+./start.sh
+```
+
+This script will:
+- Guide you through project setup
+- Create `TASK.md` with your project details
+- Create `PLAN.md` with your architecture
+- Create `claude.md` with project-specific instructions
+- Set up git hooks (optional)
+- Create initial commit
+
+**Do NOT skip this step!** Without running `start.sh`, you will not have a `TASK.md` file and Claude cannot work.
+
+### 3. (Alternative) Manually Create TASK.md
+
+If you prefer not to use the bootstrap script, manually create `TASK.md`:
 
 ```markdown
 ## Objective
@@ -72,9 +90,9 @@ Project just initialized
 Create a package.json file with Express and PostgreSQL dependencies
 ```
 
-Edit `PLAN.md` with your high-level architecture and constraints.
+Also create `PLAN.md` and `claude.md` if needed.
 
-### 3. Start Claude
+### 4. Start Claude
 
 In your terminal or VS Code:
 
@@ -83,7 +101,7 @@ In your terminal or VS Code:
 claude
 ```
 
-### 4. Paste the Protocol
+### 5. Paste the Protocol
 
 Copy the **entire contents** of `CLAUDE_PROTOCOL.md` and paste it into Claude.
 
@@ -93,7 +111,7 @@ Protocol acknowledged.
 Reading TASK.md now.
 ```
 
-### 5. Let Claude Work
+### 6. Let Claude Work
 
 Claude will:
 1. Read `TASK.md`
@@ -105,7 +123,7 @@ Claude will:
 7. Output: `TASK.md updated. Waiting.`
 8. **Stop**
 
-### 6. Continue
+### 7. Continue
 
 Simply type "continue" or "next" to proceed to the next step.
 

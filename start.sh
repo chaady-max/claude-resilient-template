@@ -52,17 +52,24 @@ fi
 echo "Let's set up your TASK.md file"
 echo ""
 
-read -p "Project name: " project_name
-project_name=${project_name:-"My Project"}
+# Check if TASK.md already exists
+if [ -f "TASK.md" ]; then
+    echo "⚠️  TASK.md already exists!"
+    if ! prompt_yes_no "Overwrite existing TASK.md?"; then
+        echo "Skipping TASK.md creation"
+        echo ""
+    else
+        read -p "Project name: " project_name
+        project_name=${project_name:-"My Project"}
 
-read -p "Project objective (what are you building?): " objective
-objective=${objective:-"[Describe your project objective]"}
+        read -p "Project objective (what are you building?): " objective
+        objective=${objective:-"[Describe your project objective]"}
 
-read -p "First action (what should Claude do first?): " first_action
-first_action=${first_action:-"[Write your first action]"}
+        read -p "First action (what should Claude do first?): " first_action
+        first_action=${first_action:-"[Write your first action]"}
 
-# Create TASK.md from template
-cat > TASK.md <<EOF
+        # Create TASK.md
+        cat > TASK.md <<EOF
 # TASK - ${project_name}
 
 ## Objective
@@ -113,8 +120,74 @@ None currently.
 **Updated By:** Human (bootstrap script)
 EOF
 
-echo "✓ TASK.md created"
-echo ""
+        echo "✓ TASK.md created"
+        echo ""
+    fi
+else
+    read -p "Project name: " project_name
+    project_name=${project_name:-"My Project"}
+
+    read -p "Project objective (what are you building?): " objective
+    objective=${objective:-"[Describe your project objective]"}
+
+    read -p "First action (what should Claude do first?): " first_action
+    first_action=${first_action:-"[Write your first action]"}
+
+    # Create TASK.md
+    cat > TASK.md <<EOF
+# TASK - ${project_name}
+
+## Objective
+
+${objective}
+
+---
+
+## Current State
+
+Project initialized from Claude-Resilient template. Ready to begin work.
+
+---
+
+## DONE
+
+- [x] Created project from Claude-Resilient template
+- [x] Ran bootstrap script (start.sh)
+
+---
+
+## OPEN
+
+- [ ] [Add your tasks here]
+
+---
+
+## Next Action
+
+${first_action}
+
+---
+
+## Notes
+
+[Add any important context, constraints, or notes here]
+
+---
+
+## Blockers
+
+None currently.
+
+---
+
+**Last Updated:** $(date '+%Y-%m-%d %H:%M:%S')
+
+**Updated By:** Human (bootstrap script)
+EOF
+
+    echo "✓ TASK.md created"
+    echo ""
+fi
 
 # Optionally create PLAN.md
 if prompt_yes_no "Create PLAN.md with project architecture?"; then
@@ -260,6 +333,20 @@ As you work on this project, document lessons learned here:
 EOF
 
     echo "✓ claude.md created"
+    echo ""
+fi
+
+# Remove template-specific gitignore entries so project files are tracked
+echo "Updating .gitignore for project use..."
+if [ -f ".gitignore" ]; then
+    # Remove lines that ignore TASK.md, PLAN.md, and claude.md
+    sed -i.bak '/^# Template Repository: These files are created by start.sh/d' .gitignore
+    sed -i.bak '/^# After running start.sh in your project, remove these lines/d' .gitignore
+    sed -i.bak '/^TASK.md$/d' .gitignore
+    sed -i.bak '/^PLAN.md$/d' .gitignore
+    sed -i.bak '/^claude.md$/d' .gitignore
+    rm .gitignore.bak 2>/dev/null || true
+    echo "✓ .gitignore updated to track project files"
     echo ""
 fi
 
